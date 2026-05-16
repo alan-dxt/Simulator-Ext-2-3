@@ -8,6 +8,8 @@
 #include "../Objects/CommandResult.h"
 #include "./RoutesReader.h"
 
+#include "./RoutesDisk.h"
+
 using json = nlohmann::json;
 
 using namespace std;
@@ -57,11 +59,16 @@ vector<Command> splitCommands(const string& data){
     return commands;
 }
 
+CommandResult executeCommand(const Command& command){
+    if(command.name == "mkdisk") return RoutesDisk::mkdisk(command.params);
+
+    return {false, " -> The command '" + command.name + "' was not recognized"};
+}
+
 vector<CommandResult> executeCommands(vector<Command>& commands){
     vector<CommandResult> results;
     for(const auto& currentCommand: commands){
-
-        results.push_back({false, "[Error] The command '" + currentCommand.name + "' was not recognized"});
+        results.push_back(executeCommand(currentCommand));
     }
     return results;
 }

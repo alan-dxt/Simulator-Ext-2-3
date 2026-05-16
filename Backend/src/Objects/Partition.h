@@ -7,6 +7,7 @@ struct Partition {
     char    part_type;          //Primary, extended or Logic(p/e/l)
     char    part_fit;           //b/f/w
     int     part_start;         //Byte where the partition starts
+    int     part_s;             //size
     char    part_name[16];      //Partition name
     int     part_correlatice;   //Correlative in the disk
     char    part_id[5];         //Id generated whent mounting the partition
