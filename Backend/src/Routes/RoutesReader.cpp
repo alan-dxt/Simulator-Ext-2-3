@@ -59,15 +59,16 @@ vector<Command> splitCommands(const string& data){
     return commands;
 }
 
-CommandResult executeCommand(const Command& command){
+CommandResult executeCommand(Command& command){
     if(command.name == "mkdisk") return RoutesDisk::mkdisk(command.params);
+    else if(command.name == "rmdisk") return RoutesDisk::rmdisk(command.params);
 
     return {false, " -> The command '" + command.name + "' was not recognized"};
 }
 
 vector<CommandResult> executeCommands(vector<Command>& commands){
     vector<CommandResult> results;
-    for(const auto& currentCommand: commands){
+    for(Command& currentCommand: commands){
         results.push_back(executeCommand(currentCommand));
     }
     return results;

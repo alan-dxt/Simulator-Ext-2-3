@@ -6,14 +6,14 @@
 
 using namespace std;
 
-CommandResult RoutesDisk::mkdisk(map<std::string, std::string> params){
+CommandResult RoutesDisk::mkdisk(map<std::string, std::string>& params){
     if(params.find("size") == params.end()) return {false, "Mkdisk: Missing parameter -size"};
     if(params.find("path") == params.end()) return {false, "Mkdisk: Missing parameter -path"};
 
     std::string path = "src/Disks/" + params["path"];
     int size;
     try{ size = stoi(params["size"]); }
-    catch(...) {return {false, ""};}
+    catch(...) {return {false, "Mkdisk: Invalid value for size"};}
 
     string fit = "ff";
     if(params.find("fit") != params.end()) fit = params["fit"];
@@ -26,4 +26,10 @@ CommandResult RoutesDisk::mkdisk(map<std::string, std::string> params){
     else if(unit == "m") size *= 1024 * 1024;
 
     return ControllerDisk::createDisk(path, fit, size);
+}
+
+CommandResult RoutesDisk::rmdisk(map<std::string, std::string>& params){
+    if(params.find("path") == params.end()) return {false, "Rmdisk: Missing parameter -path"};
+    string path = "src/Disks/" + params["path"];
+    return ControllerDisk::deleteDisk(path);
 }

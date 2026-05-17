@@ -5,6 +5,7 @@
 #include "../Objects/Partition.h"
 #include <fstream>
 #include <cstdlib> 
+#include <filesystem>
 
 using namespace std;
 
@@ -58,5 +59,13 @@ CommandResult ControllerDisk::createDisk(string& path, string& fit, int& size){
 
     writeMBR(path, mbr);
     return {true, "Mkdisk: The disk was created succesfully"};
+}
+
+CommandResult ControllerDisk::deleteDisk(string& path){
+    if(!disksExists(path)) return {false, "Rmdisk: The disk was not found"};
+    
+    if(filesystem::remove(path))
+        return {true, "Rmdisk: The disk was removed succesfully"};
+    return {false, "Rmdisk: It was not possible to delete  de disk"};
 }
 
